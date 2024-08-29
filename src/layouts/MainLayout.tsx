@@ -1,21 +1,21 @@
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { Box } from "@mui/material";
 import { Sidebar } from "../components/Sidebar/Sidebar";
 
-const MainLayout = ({ children }: { children: ReactNode }) => {
+interface MainLayoutProps {
+  children: ReactNode;
+}
+
+export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   return (
-    <Box
-      sx={{
-        display: "flex",
-        width: "100%",
-        height: "100vh",
-        background: "blue",
-      }}
-    >
+    <Box sx={{ display: "flex", height: "100vh" }}>
+      {/* Sidebar luôn hiển thị */}
       <Sidebar />
-      {children}
+
+      {/* Nội dung chính được truyền vào từ `children` */}
+      <Box sx={{ flexGrow: 1 }}>
+        {children} {/* Render các children truyền từ App.tsx */}
+      </Box>
     </Box>
   );
 };
-
-export default MainLayout;

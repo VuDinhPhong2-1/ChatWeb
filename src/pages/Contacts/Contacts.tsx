@@ -5,9 +5,8 @@ import ChatList from "../../components/ChatList/ChatList";
 import ChatWindow from "../../components/ChatWindow/ChatWindow";
 import EmptyState from "../../components/EmptyState/EmptyState";
 import { useAuth } from "../../hooks/useAuth";
-import { Search } from "../../components/Search/Search";
 
-export const Home = () => {
+export const Contacts = () => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const theme = useTheme();
@@ -15,25 +14,26 @@ export const Home = () => {
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
 
   if (!isAuthenticated) {
-    navigate("/signin");
-    return null;
+    navigate("/signin"); // Redirect to SignIn if not authenticated
+    return null; // Return null to avoid rendering the rest of the component
   }
 
   return (
     <Box sx={{ display: "flex", height: "100%" }}>
+      {/* Danh sách danh bạ */}
       {isSmUp && (
         <Box
           sx={{
-            width: "344px",
+            width: "300px",
             borderRight: "1px solid #ddd",
             overflowY: "auto",
           }}
         >
-          <Search />
           <ChatList setSelectedChat={setSelectedChat} />
         </Box>
       )}
 
+      {/* Nội dung chat hoặc thông điệp chào mừng */}
       <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
         {selectedChat ? (
           <ChatWindow chat={selectedChat} />
