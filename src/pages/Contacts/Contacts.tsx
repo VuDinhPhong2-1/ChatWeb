@@ -1,23 +1,15 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Box, useMediaQuery, useTheme } from "@mui/material";
 import ChatList from "../../components/ChatList/ChatList";
 import ChatWindow from "../../components/ChatWindow/ChatWindow";
 import EmptyState from "../../components/EmptyState/EmptyState";
-import { useAuth } from "../../hooks/useAuth";
+import useAuth from "../../hooks/useAuth";
 
 export const Contacts = () => {
-  const { isAuthenticated } = useAuth();
-  const navigate = useNavigate();
   const theme = useTheme();
   const isSmUp = useMediaQuery(theme.breakpoints.up("sm"));
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
-
-  if (!isAuthenticated) {
-    navigate("/signin"); // Redirect to SignIn if not authenticated
-    return null; // Return null to avoid rendering the rest of the component
-  }
-
+  useAuth("contact");
   return (
     <Box sx={{ display: "flex", height: "100%" }}>
       {/* Danh sách danh bạ */}

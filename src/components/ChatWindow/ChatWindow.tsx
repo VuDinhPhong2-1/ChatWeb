@@ -1,7 +1,6 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 
-// Định nghĩa kiểu cho props
 interface ChatWindowProps {
   chat: string;
 }

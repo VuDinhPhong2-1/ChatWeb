@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Box, useMediaQuery, useTheme } from "@mui/material";
 import ChatList from "../../components/ChatList/ChatList";
 import ChatWindow from "../../components/ChatWindow/ChatWindow";
@@ -8,16 +7,11 @@ import { useAuth } from "../../hooks/useAuth";
 import { Search } from "../../components/Search/Search";
 
 export const Home = () => {
-  const { isAuthenticated } = useAuth();
-  const navigate = useNavigate();
   const theme = useTheme();
   const isSmUp = useMediaQuery(theme.breakpoints.up("sm"));
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
 
-  if (!isAuthenticated) {
-    navigate("/signin");
-    return null;
-  }
+  useAuth("");
 
   return (
     <Box sx={{ display: "flex", height: "100%" }}>

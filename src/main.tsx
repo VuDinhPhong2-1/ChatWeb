@@ -1,4 +1,3 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import { Experimental_CssVarsProvider as CssVarsProvider } from "@mui/material/styles";
@@ -9,11 +8,11 @@ import client from "./apollo-client.ts";
 
 createRoot(document.getElementById("root")!).render(
   <ApolloProvider client={client}>
-    <StrictMode>
+    {/* <StrictMode> */}
       <CssVarsProvider theme={theme}>
         <CssBaseline />
         <App />
       </CssVarsProvider>
-    </StrictMode>
+    {/* </StrictMode> */}
   </ApolloProvider>
 );

@@ -20,11 +20,11 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import CloseIcon from "@mui/icons-material/Close"; // Import Close Icon
+import CloseIcon from "@mui/icons-material/Close";
 
 export const Search = () => {
   const [open, setOpen] = useState(false);
-  const [searchType, setSearchType] = useState("phone"); // 'email' or 'phone'
+  const [searchType, setSearchType] = useState("phone");
   const [searchValue, setSearchValue] = useState("");
 
   const handleClickOpen = () => {
@@ -37,8 +37,6 @@ export const Search = () => {
 
   const handleSearch = () => {
     console.log(`Searching for ${searchType}: ${searchValue}`);
-    // Thêm logic tìm kiếm ở đây
-    // Bỏ handleClose để pop-up không bị tắt khi nhấn Tìm kiếm
   };
 
   return (

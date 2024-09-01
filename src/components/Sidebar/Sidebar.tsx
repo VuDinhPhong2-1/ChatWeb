@@ -11,7 +11,6 @@ import { darken } from "@mui/material/styles";
 export const Sidebar = () => {
   const location = useLocation();
 
-  // Kiểm tra nếu route hiện tại là '/'
   const isHome = location.pathname === "/";
 
   return (
@@ -63,7 +62,7 @@ export const Sidebar = () => {
             justifyContent: "center",
             background: isHome ? darken("#0091FF", 0.2) : "#0091FF",
             cursor: "pointer",
-            '&:hover': {
+            "&:hover": {
               background: darken("#0091FF", 0.3),
             },
           }}
@@ -83,7 +82,7 @@ export const Sidebar = () => {
             alignItems: "center",
             justifyContent: "center",
             cursor: "pointer",
-            '&:hover': {
+            "&:hover": {
               background: darken("#0091FF", 0.3),
             },
           }}
@@ -99,7 +98,7 @@ export const Sidebar = () => {
             alignItems: "center",
             justifyContent: "center",
             cursor: "pointer",
-            '&:hover': {
+            "&:hover": {
               background: darken("#0091FF", 0.3),
             },
           }}
@@ -125,7 +124,7 @@ export const Sidebar = () => {
             alignItems: "center",
             justifyContent: "center",
             cursor: "pointer",
-            '&:hover': {
+            "&:hover": {
               background: darken("#0091FF", 0.3),
             },
           }}
@@ -141,7 +140,7 @@ export const Sidebar = () => {
             alignItems: "center",
             justifyContent: "center",
             cursor: "pointer",
-            '&:hover': {
+            "&:hover": {
               background: darken("#0091FF", 0.3),
             },
           }}
@@ -157,7 +156,7 @@ export const Sidebar = () => {
             alignItems: "center",
             justifyContent: "center",
             cursor: "pointer",
-            '&:hover': {
+            "&:hover": {
               background: darken("#0091FF", 0.3),
             },
           }}

@@ -1,23 +1,18 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Box, Typography, TextField, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { LOGIN_MUTATION } from "../../graphql/mutations";
-import { useAuth } from "../../hooks/useAuth";
+import useAuth from "../../hooks/useAuth";
 
 export const SignIn = () => {
-  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
-  
+
+  useAuth("");
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({ email: "", password: "" });
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/"); // Redirect to home if already authenticated
-    }
-  }, [isAuthenticated, navigate]);
 
   const [login, { loading, error }] = useMutation(LOGIN_MUTATION, {
     onCompleted: (data) => {
@@ -229,3 +224,5 @@ export const SignIn = () => {
     </Box>
   );
 };
+
+export default SignIn;
