@@ -1,11 +1,18 @@
-import BusinessCenterOutlinedIcon from "@mui/icons-material/BusinessCenterOutlined";
 import { Avatar, Box } from "@mui/material";
 import ChatIcon from "@mui/icons-material/Chat";
 import PortraitOutlinedIcon from "@mui/icons-material/PortraitOutlined";
 import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
 import CloudQueueIcon from "@mui/icons-material/CloudQueue";
+import BusinessCenterOutlinedIcon from "@mui/icons-material/BusinessCenterOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import { useLocation } from "react-router-dom";
+import { darken } from "@mui/material/styles";
+
 export const Sidebar = () => {
+  const location = useLocation();
+
+  const isHome = location.pathname === "/";
+
   return (
     <Box
       sx={{
@@ -50,33 +57,50 @@ export const Sidebar = () => {
           sx={{
             display: "flex",
             height: "64px",
-            width: "64px%",
+            width: "64px",
             alignItems: "center",
             justifyContent: "center",
+            background: isHome ? darken("#0091FF", 0.2) : "#0091FF",
+            cursor: "pointer",
+            "&:hover": {
+              background: darken("#0091FF", 0.3),
+            },
           }}
         >
-          <ChatIcon sx={{ color: "white" }} />
+          <ChatIcon
+            sx={{
+              color: "white",
+            }}
+          />
         </Box>
         {/* Contacts */}
         <Box
           sx={{
             display: "flex",
             height: "64px",
-            width: "64px%",
+            width: "64px",
             alignItems: "center",
             justifyContent: "center",
+            cursor: "pointer",
+            "&:hover": {
+              background: darken("#0091FF", 0.3),
+            },
           }}
         >
           <PortraitOutlinedIcon sx={{ color: "white" }} />
         </Box>
-        {/* ... */}
+        {/* Tasks */}
         <Box
           sx={{
             display: "flex",
             height: "64px",
-            width: "64px%",
+            width: "64px",
             alignItems: "center",
             justifyContent: "center",
+            cursor: "pointer",
+            "&:hover": {
+              background: darken("#0091FF", 0.3),
+            },
           }}
         >
           <CheckBoxOutlinedIcon sx={{ color: "white" }} />
@@ -96,9 +120,13 @@ export const Sidebar = () => {
           sx={{
             display: "flex",
             height: "64px",
-            width: "64px%",
+            width: "64px",
             alignItems: "center",
             justifyContent: "center",
+            cursor: "pointer",
+            "&:hover": {
+              background: darken("#0091FF", 0.3),
+            },
           }}
         >
           <CloudQueueIcon sx={{ color: "white" }} />
@@ -108,21 +136,29 @@ export const Sidebar = () => {
           sx={{
             display: "flex",
             height: "64px",
-            width: "64px%",
+            width: "64px",
             alignItems: "center",
             justifyContent: "center",
+            cursor: "pointer",
+            "&:hover": {
+              background: darken("#0091FF", 0.3),
+            },
           }}
         >
           <BusinessCenterOutlinedIcon sx={{ color: "white" }} />
         </Box>
-        {/* ... */}
+        {/* Settings */}
         <Box
           sx={{
             display: "flex",
             height: "64px",
-            width: "64px%",
+            width: "64px",
             alignItems: "center",
             justifyContent: "center",
+            cursor: "pointer",
+            "&:hover": {
+              background: darken("#0091FF", 0.3),
+            },
           }}
         >
           <SettingsOutlinedIcon sx={{ color: "white" }} />

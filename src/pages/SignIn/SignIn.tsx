@@ -1,13 +1,30 @@
 import { useState } from "react";
 import { Box, Typography, TextField, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "@apollo/client";
+import { LOGIN_MUTATION } from "../../graphql/mutations";
+import useAuth from "../../hooks/useAuth";
 
 export const SignIn = () => {
   const navigate = useNavigate();
 
+  useAuth("");
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({ email: "", password: "" });
+
+  const [login, { loading, error }] = useMutation(LOGIN_MUTATION, {
+    onCompleted: (data) => {
+      const { access_token, refresh_token } = data.login;
+      sessionStorage.setItem("access_token", access_token);
+      sessionStorage.setItem("refresh_token", refresh_token);
+      navigate("/");
+    },
+    onError: (error) => {
+      console.error("Login failed:", error);
+    },
+  });
 
   const handleSubmit = () => {
     let valid = true;
@@ -30,7 +47,11 @@ export const SignIn = () => {
     setErrors({ email: emailError, password: passwordError });
 
     if (valid) {
-      console.log("Form submitted");
+      login({
+        variables: {
+          loginUserInput: { email, password },
+        },
+      });
     }
   };
 
@@ -135,9 +156,13 @@ export const SignIn = () => {
               },
             }}
             onClick={handleSubmit}
+            disabled={loading}
           >
-            Log In
+            {loading ? "Logging in..." : "Log In"}
           </Button>
+          {error && (
+            <p style={{ color: "red" }}>Login failed: {error.message}</p>
+          )}
         </Box>
         <Typography
           sx={{
@@ -156,50 +181,7 @@ export const SignIn = () => {
             width: "100%",
           }}
         >
-          <Box sx={{ display: "flex", flex: 1 }}>
-            <Box
-              component="img"
-              src="https://res.cloudinary.com/dk0lhapty/image/upload/v1724479024/naver-icon_ylqxiu.png"
-              alt="Naver"
-              sx={{
-                width: { xs: "50px", md: "66px" },
-                height: { xs: "50px", md: "66px" },
-              }}
-            />
-          </Box>
-          <Box sx={{ display: "flex", flex: 1, justifyContent: "center" }}>
-            <Box
-              component="img"
-              src="https://res.cloudinary.com/dk0lhapty/image/upload/v1724479024/kakao-icon_mngc8u.png"
-              alt="Kakao"
-              sx={{
-                width: { xs: "50px", md: "66px" },
-                height: { xs: "50px", md: "66px" },
-              }}
-            />
-          </Box>
-          <Box sx={{ display: "flex", flex: 1, justifyContent: "center" }}>
-            <Box
-              component="img"
-              src="https://res.cloudinary.com/dk0lhapty/image/upload/v1724479023/facebook-icon_yv62b2.png"
-              alt="Facebook"
-              sx={{
-                width: { xs: "50px", md: "66px" },
-                height: { xs: "50px", md: "66px" },
-              }}
-            />
-          </Box>
-          <Box sx={{ display: "flex", flex: 1, justifyContent: "end" }}>
-            <Box
-              component="img"
-              src="https://res.cloudinary.com/dk0lhapty/image/upload/v1724479023/google-icon_mh0ljv.png"
-              alt="Google"
-              sx={{
-                width: { xs: "50px", md: "66px" },
-                height: { xs: "50px", md: "66px" },
-              }}
-            />
-          </Box>
+          {/* Add SNS login buttons here */}
         </Box>
         <Button
           variant="outlined"
@@ -242,3 +224,5 @@ export const SignIn = () => {
     </Box>
   );
 };
+
+export default SignIn;
