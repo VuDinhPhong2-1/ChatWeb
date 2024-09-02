@@ -9,7 +9,7 @@ export const Contacts = () => {
   const theme = useTheme();
   const isSmUp = useMediaQuery(theme.breakpoints.up("sm"));
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
-  useAuth("contact");
+  useAuth("contact", "signin");
   return (
     <Box sx={{ display: "flex", height: "100%" }}>
       {/* Danh sách danh bạ */}
