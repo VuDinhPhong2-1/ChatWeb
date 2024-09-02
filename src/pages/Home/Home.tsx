@@ -11,7 +11,7 @@ export const Home = () => {
   const isSmUp = useMediaQuery(theme.breakpoints.up("sm"));
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
 
-  useAuth("");
+  useAuth("", "signin");
 
   return (
     <Box sx={{ display: "flex", height: "100%" }}>

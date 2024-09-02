@@ -7,7 +7,7 @@ import { REFRESH_TOKEN_MUTATION } from "../graphql/mutations";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const useAuth = (route: string) => {
+export const useAuth = (routeFrom: string, routeTo: string) => {
   const accessToken = sessionStorage.getItem("access_token");
   const refreshToken = sessionStorage.getItem("refresh_token");
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ export const useAuth = (route: string) => {
 
   useEffect(() => {
     if (accessToken && accessData && !accessError) {
-      navigate(`/${route}`);
+      navigate(`/${routeFrom}`);
     } else if (refreshToken && refreshData && !refreshError) {
       refreshTokenMutation({
         variables: { refresh_token: refreshToken },
@@ -46,14 +46,14 @@ export const useAuth = (route: string) => {
             data.refresherToken.refresh_token
           );
 
-          navigate(`/${route}`);
+          navigate(`/${routeFrom}`);
         },
         onError: () => {
-          navigate("/signin");
+          navigate("/routeTo");
         },
       });
     } else if (!accessToken && !refreshToken) {
-      navigate("/signin");
+      navigate("/routeTo");
     }
   }, [
     accessData,
@@ -64,7 +64,8 @@ export const useAuth = (route: string) => {
     accessToken,
     refreshToken,
     refreshTokenMutation,
-    route,
+    routeFrom,
+    routeTo,
   ]);
 };
 

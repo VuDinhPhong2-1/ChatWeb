@@ -7,6 +7,7 @@ import {
   Checkbox,
   FormControlLabel,
 } from "@mui/material";
+import useAuth from "../../hooks/useAuth";
 
 interface Errors {
   email?: string;
@@ -27,6 +28,8 @@ export const SignUp = () => {
   const [contact, setContact] = useState<string>("");
   const [termsAccepted, setTermsAccepted] = useState<boolean>(false);
   const [errors, setErrors] = useState<Errors>({});
+
+  useAuth("", "signup");
 
   const validate = (): boolean => {
     const newErrors: Errors = {};
