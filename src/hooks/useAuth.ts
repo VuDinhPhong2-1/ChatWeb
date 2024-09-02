@@ -49,11 +49,11 @@ export const useAuth = (routeFrom: string, routeTo: string) => {
           navigate(`/${routeFrom}`);
         },
         onError: () => {
-          navigate("/routeTo");
+          navigate(`/${routeTo}`);
         },
       });
     } else if (!accessToken && !refreshToken) {
-      navigate("/routeTo");
+      navigate(`/${routeTo}`);
     }
   }, [
     accessData,
