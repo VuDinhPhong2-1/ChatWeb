@@ -9,6 +9,7 @@ const EmptyState = () => {
         justifyContent: "center",
         alignItems: "center",
         textAlign: "center",
+        background: "gray",
       }}
     >
       <Typography variant="h5">

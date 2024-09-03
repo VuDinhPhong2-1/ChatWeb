@@ -11,3 +11,15 @@ export const VALIDATE_REFRESH_TOKEN = gql`
     validateRefreshToken(refresh_token: $refresh_token)
   }
 `;
+
+export const FIND_ONE_BY_EMAIL = gql`
+  query FindOneByEmail($email: String!) {
+    findOneByEmail(email: $email) {
+      id
+      name
+      age
+      email
+      role
+    }
+  }
+`;

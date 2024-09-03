@@ -35,3 +35,15 @@ export const GET_USER_FROM_TOKEN_QUERY = gql`
     }
   }
 `;
+
+export const CREATE_USER_MUTATION = gql`
+  mutation CreateUser($input: CreateUserInput!) {
+    createUser(input: $input) {
+      id
+      name
+      email
+      age
+      role
+    }
+  }
+`;

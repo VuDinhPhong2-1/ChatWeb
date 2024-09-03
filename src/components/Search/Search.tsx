@@ -16,19 +16,47 @@ import {
   MenuItem,
   Typography,
   IconButton as MuiIconButton,
+  Slide,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import CloseIcon from "@mui/icons-material/Close";
+import { useLazyQuery } from "@apollo/client";
+import { FIND_ONE_BY_EMAIL } from "../../graphql/queries";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 export const Search = () => {
   const [open, setOpen] = useState(false);
   const [searchType, setSearchType] = useState("phone");
   const [searchValue, setSearchValue] = useState("");
+  const [dialogSearchValue, setDialogSearchValue] = useState(""); // State riêng cho dialog
+  const [showResult, setShowResult] = useState(false);
+  const [noResult, setNoResult] = useState(false);
+
+  const [searchUser, { data, loading, error }] = useLazyQuery(
+    FIND_ONE_BY_EMAIL,
+    {
+      onCompleted: (data) => {
+        if (data && data.findOneByEmail) {
+          setShowResult(true);
+          setNoResult(false);
+        } else {
+          setNoResult(true);
+          setShowResult(false);
+        }
+      },
+      onError: () => {
+        setNoResult(true); // Xử lý khi có lỗi xảy ra
+      },
+    }
+  );
 
   const handleClickOpen = () => {
     setOpen(true);
+    setShowResult(false); // Reset lại khi mở dialog
+    setNoResult(false); // Đặt lại trạng thái "không có kết quả"
+    setDialogSearchValue(""); // Reset dialog input value
   };
 
   const handleClose = () => {
@@ -36,9 +64,15 @@ export const Search = () => {
   };
 
   const handleSearch = () => {
-    console.log(`Searching for ${searchType}: ${searchValue}`);
+    if (searchType === "email") {
+      searchUser({ variables: { email: dialogSearchValue } });
+    } else {
+      console.log("Searching by phone is not implemented yet.");
+    }
   };
-
+  const handleBack = () => {
+    setShowResult(false);
+  };
   return (
     <Box
       sx={{
@@ -65,6 +99,8 @@ export const Search = () => {
           borderRadius: "5px",
           paddingLeft: "10px",
         }}
+        value={searchValue}
+        onChange={(e) => setSearchValue(e.target.value)}
       />
       <IconButton sx={{ padding: "5px" }} onClick={handleClickOpen}>
         <PersonAddIcon sx={{ color: "#5f6368" }} />
@@ -74,7 +110,7 @@ export const Search = () => {
       </IconButton>
 
       {/* Pop-up Dialog */}
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
         <DialogTitle>
           Thêm bạn
           <MuiIconButton
@@ -115,24 +151,68 @@ export const Search = () => {
               variant="outlined"
               label={searchType === "email" ? "Email" : "Số điện thoại"}
               fullWidth
-              value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
+              value={dialogSearchValue} // Sử dụng state riêng cho dialog
+              onChange={(e) => setDialogSearchValue(e.target.value)}
             />
           </Box>
-          <Box sx={{ marginTop: 2 }}>
-            <Typography variant="body2" color="textSecondary">
-              Không có tìm kiếm nào gần đây
+          {noResult && (
+            <Typography variant="body2" color="error" sx={{ marginTop: 2 }}>
+              Không có kết quả nào phù hợp.
             </Typography>
-          </Box>
+          )}
+          {!noResult && (
+            <Box sx={{ marginTop: 2 }}>
+              <Typography variant="body2" color="textSecondary">
+                Không có tìm kiếm nào gần đây
+              </Typography>
+            </Box>
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} variant="outlined">
             Hủy
           </Button>
-          <Button onClick={handleSearch} variant="contained" color="primary">
+          <Button
+            onClick={handleSearch}
+            variant="contained"
+            color="primary"
+            disabled={!dialogSearchValue}
+          >
             Tìm kiếm
           </Button>
         </DialogActions>
+
+        {/* Tab hiển thị thông tin người dùng */}
+        <Slide direction="left" in={showResult} mountOnEnter unmountOnExit>
+          <Box
+            sx={{
+              backgroundColor: "#f1f1f1",
+              padding: "20px",
+              position: "absolute",
+              top: 0,
+              right: 0,
+              width: "100%",
+              height: "100%",
+              boxSizing: "border-box",
+              zIndex: 1000,
+            }}
+          >
+            <IconButton sx={{ marginBottom: 2 }} onClick={handleBack}>
+              <ArrowBackIcon />
+            </IconButton>
+            <Typography variant="h6">Kết quả tìm kiếm:</Typography>
+            {loading && <p>Đang tìm kiếm...</p>}
+            {error && <p>Có lỗi xảy ra: {error.message}</p>}
+            {data && data.findOneByEmail && (
+              <Box>
+                <Typography>Email: {data.findOneByEmail.email}</Typography>
+                <Typography>Tên: {data.findOneByEmail.name}</Typography>
+                <Typography>Tuổi: {data.findOneByEmail.age}</Typography>
+                <Typography>Vai trò: {data.findOneByEmail.role}</Typography>
+              </Box>
+            )}
+          </Box>
+        </Slide>
       </Dialog>
     </Box>
   );

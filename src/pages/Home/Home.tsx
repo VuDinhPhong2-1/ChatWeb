@@ -15,28 +15,41 @@ export const Home = () => {
 
   return (
     <Box sx={{ display: "flex", height: "100%" }}>
-      {isSmUp && (
+      {isSmUp ? (
+        <>
+          <Box
+            sx={{
+              width: "344px",
+              borderRight: "1px solid #ddd",
+              overflowY: "auto",
+              background: "yellow",
+            }}
+          >
+            <Search />
+            <ChatList setSelectedChat={setSelectedChat} />
+          </Box>
+
+          <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
+            {selectedChat ? <ChatWindow chat={selectedChat} /> : <EmptyState />}
+          </Box>
+        </>
+      ) : selectedChat ? (
+        <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
+          <ChatWindow chat={selectedChat} />
+        </Box>
+      ) : (
         <Box
           sx={{
-            width: "344px",
+            width: "100%",
             borderRight: "1px solid #ddd",
             overflowY: "auto",
+            background: "yellow",
           }}
         >
           <Search />
           <ChatList setSelectedChat={setSelectedChat} />
         </Box>
       )}
-
-      <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
-        {selectedChat ? (
-          <ChatWindow chat={selectedChat} />
-        ) : !isSmUp ? (
-          <ChatList setSelectedChat={setSelectedChat} />
-        ) : (
-          <EmptyState />
-        )}
-      </Box>
     </Box>
   );
 };

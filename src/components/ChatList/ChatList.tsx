@@ -6,10 +6,10 @@ interface ChatListProps {
 }
 
 const ChatList: React.FC<ChatListProps> = ({ setSelectedChat }) => {
-  const chats: string[] = ["Chat 1", "Chat 2", "Chat 3"]; 
+  const chats: string[] = ["Chat 1", "Chat 2", "Chat 3"];
 
   return (
-    <List>
+    <List sx={{ background: "green" }}>
       {chats.map((chat, index) => (
         <ListItem key={index} onClick={() => setSelectedChat(chat)}>
           <ListItemText primary={chat} />
