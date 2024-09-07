@@ -17,6 +17,9 @@ import {
   Typography,
   IconButton as MuiIconButton,
   Slide,
+  Avatar,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
@@ -33,6 +36,10 @@ export const Search = () => {
   const [dialogSearchValue, setDialogSearchValue] = useState(""); // State riêng cho dialog
   const [showResult, setShowResult] = useState(false);
   const [noResult, setNoResult] = useState(false);
+
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down("sm")); // Nếu màn hình nhỏ, dialog sẽ chuyển thành fullScreen
+  const isXs = useMediaQuery(theme.breakpoints.down("xs")); // Kiểm tra màn hình xs
 
   const [searchUser, { data, loading, error }] = useLazyQuery(
     FIND_ONE_BY_EMAIL,
@@ -51,7 +58,6 @@ export const Search = () => {
       },
     }
   );
-
   const handleClickOpen = () => {
     setOpen(true);
     setShowResult(false); // Reset lại khi mở dialog
@@ -70,9 +76,11 @@ export const Search = () => {
       console.log("Searching by phone is not implemented yet.");
     }
   };
+
   const handleBack = () => {
     setShowResult(false);
   };
+
   return (
     <Box
       sx={{
@@ -110,7 +118,16 @@ export const Search = () => {
       </IconButton>
 
       {/* Pop-up Dialog */}
-      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        fullScreen={fullScreen} // Responsive dialog: chuyển sang fullScreen cho mobile
+        fullWidth
+        maxWidth="sm"
+        aria-modal="true" // Thêm thuộc tính aria-modal
+        disableEnforceFocus // Tắt tính năng tự động trap focus
+        disableRestoreFocus // Tắt khôi phục focus khi đóng dialog
+      >
         <DialogTitle>
           Thêm bạn
           <MuiIconButton
@@ -126,11 +143,17 @@ export const Search = () => {
             <CloseIcon />
           </MuiIconButton>
         </DialogTitle>
-        <DialogContent>
+        <DialogContent
+          sx={{
+            height: isXs ? "auto" : "400px", // Chiều cao tự động cho màn hình xs
+            overflowY: "auto", // Đảm bảo nội dung có thể cuộn nếu vượt quá chiều cao
+          }}
+        >
           <Box
             sx={{
               display: "flex",
-              alignItems: "center",
+              flexDirection: isXs ? "column" : "row", // Chuyển từ row sang column trên xs
+              alignItems: isXs ? "flex-start" : "center",
               gap: 2,
               marginTop: "10px",
             }}
@@ -197,18 +220,61 @@ export const Search = () => {
               zIndex: 1000,
             }}
           >
-            <IconButton sx={{ marginBottom: 2 }} onClick={handleBack}>
-              <ArrowBackIcon />
-            </IconButton>
-            <Typography variant="h6">Kết quả tìm kiếm:</Typography>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                marginBottom: "24px",
+              }}
+            >
+              <IconButton onClick={handleBack}>
+                <ArrowBackIcon />
+              </IconButton>
+              <Typography sx={{ fontWeight: "600" }}>
+                Thông tin cá nhân
+              </Typography>
+            </Box>
             {loading && <p>Đang tìm kiếm...</p>}
             {error && <p>Có lỗi xảy ra: {error.message}</p>}
             {data && data.findOneByEmail && (
               <Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: isXs ? "column" : "row",
+                    alignItems: "center",
+                    gap: 2,
+                    marginBottom: "24px",
+                    border: "10px solid gray",
+                  }}
+                >
+                  <Avatar
+                    alt={data.findOneByEmail.name}
+                    src={data.findOneByEmail?.avatar_url}
+                    sx={{ width: 56, height: 56 }}
+                  />
+                  <Typography sx={{ fontWeight: "bold" }}>
+                    {data.findOneByEmail.name}
+                  </Typography>
+                </Box>
+                <Typography sx={{ fontWeight: "bold" }}>
+                  Thông tin cá nhân
+                </Typography>
                 <Typography>Email: {data.findOneByEmail.email}</Typography>
-                <Typography>Tên: {data.findOneByEmail.name}</Typography>
                 <Typography>Tuổi: {data.findOneByEmail.age}</Typography>
-                <Typography>Vai trò: {data.findOneByEmail.role}</Typography>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={{ marginTop: 2 }}
+                  onClick={() => {
+                    console.log(
+                      "Đã gửi yêu cầu kết bạn đến",
+                      data.findOneByEmail.email
+                    );
+                  }}
+                >
+                  Kết bạn
+                </Button>
               </Box>
             )}
           </Box>

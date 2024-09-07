@@ -7,10 +7,12 @@ import BusinessCenterOutlinedIcon from "@mui/icons-material/BusinessCenterOutlin
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import { useLocation } from "react-router-dom";
 import { darken } from "@mui/material/styles";
+import { useQuery } from "@apollo/client";
+import { ME } from "../../graphql/queries";
 
 export const Sidebar = () => {
   const location = useLocation();
-
+  const { data: meData } = useQuery(ME);
   const isHome = location.pathname === "/";
 
   return (
@@ -43,8 +45,8 @@ export const Sidebar = () => {
           }}
         >
           <Avatar
-            alt="Remy Sharp"
-            src="https://s120-ava-talk.zadn.vn/5/6/e/0/10/120/85dc5a08761747f2b022ff53e5b9f62e.jpg"
+            alt={meData?.me?.name || "Unknown User"}
+            src={meData?.me?.avatar_url} // Đảm bảo đường dẫn avatar hợp lệ
             sx={{
               border: "1px solid #fff",
               height: "48px",

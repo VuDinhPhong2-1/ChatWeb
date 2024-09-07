@@ -7,8 +7,8 @@ export const VALIDATE_ACCESS_TOKEN = gql`
 `;
 
 export const VALIDATE_REFRESH_TOKEN = gql`
-  query ValidateRefreshToken($refresh_token: String!) {
-    validateRefreshToken(refresh_token: $refresh_token)
+  query ValidateRefreshToken {
+    validateRefreshToken
   }
 `;
 
@@ -20,6 +20,19 @@ export const FIND_ONE_BY_EMAIL = gql`
       age
       email
       role
+      avatar_url
+    }
+  }
+`;
+
+export const ME = gql`
+  query Me {
+    me {
+      id
+      name
+      age
+      email
+      avatar_url
     }
   }
 `;

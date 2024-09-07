@@ -16,9 +16,8 @@ export const SignIn = () => {
 
   const [login, { loading, error }] = useMutation(LOGIN_MUTATION, {
     onCompleted: (data) => {
-      const { access_token, refresh_token } = data.login;
+      const { access_token } = data.login;
       sessionStorage.setItem("access_token", access_token);
-      sessionStorage.setItem("refresh_token", refresh_token);
       navigate("/");
     },
     onError: (error) => {

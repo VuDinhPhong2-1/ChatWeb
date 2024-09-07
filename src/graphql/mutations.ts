@@ -4,16 +4,14 @@ export const LOGIN_MUTATION = gql`
   mutation Login($loginUserInput: LoginUserInput!) {
     login(loginUserInput: $loginUserInput) {
       access_token
-      refresh_token
     }
   }
 `;
 
-export const REFRESH_TOKEN_MUTATION = gql`
-  mutation RefresherToken($refresh_token: String!) {
-    refresherToken(refresh_token: $refresh_token) {
+export const PROCESS_NEW_TOKEN_MUTATION = gql`
+  mutation ProcessNewToken {
+    processNewToken {
       access_token
-      refresh_token
     }
   }
 `;
